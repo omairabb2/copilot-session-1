@@ -11,13 +11,15 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route
-            path="/dashboard"
+            path="/welcome"
             element={
               <ProtectedRoute>
                 <DashboardPage />
               </ProtectedRoute>
             }
           />
+          {/* Keep /dashboard for backward compatibility */}
+          <Route path="/dashboard" element={<Navigate to="/welcome" replace />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>

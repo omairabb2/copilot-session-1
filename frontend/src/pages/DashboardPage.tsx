@@ -22,82 +22,197 @@ export default function DashboardPage() {
     navigate("/login", { replace: true });
   }
 
-  const healthBadge: Record<HealthState, { label: string; classes: string }> = {
-    checking: { label: "Verificando…", classes: "bg-gray-100 text-gray-600" },
-    ok: { label: "Online ✓", classes: "bg-green-100 text-green-700" },
-    error: { label: "Sin conexión ✗", classes: "bg-red-100 text-red-700" },
+  const healthBadge: Record<HealthState, { label: string; bg: string; color: string }> = {
+    checking: { label: "Verificando…", bg: "#E5E7EB", color: "#6B7280" },
+    ok: { label: "Online ✓", bg: "#E0E7FF", color: "#3730A3" },
+    error: { label: "Sin conexión ✗", bg: "#FFEDD5", color: "#9A3412" },
   };
 
-  const { label, classes } = healthBadge[health];
+  const badge = healthBadge[health];
+
+  const initial = username?.[0]?.toUpperCase() ?? "?";
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="flex min-h-screen flex-col" style={{ background: "#FFFFFF" }}>
+      {/* Gradient background accent */}
+      <div
+        className="pointer-events-none fixed inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at 80% 0%, rgba(224,231,255,0.35) 0%, transparent 50%), radial-gradient(circle at 5% 90%, rgba(255,237,213,0.25) 0%, transparent 45%)",
+        }}
+      />
+
       {/* Header */}
-      <header className="flex items-center justify-between bg-white px-6 py-4 shadow-sm">
+      <header
+        className="relative z-10 flex items-center justify-between px-6 py-4"
+        style={{
+          background: "rgba(255,255,255,0.9)",
+          backdropFilter: "blur(4px)",
+          borderBottom: "0.8px solid #E5E7EB",
+        }}
+      >
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
-            {username?.[0]?.toUpperCase() ?? "?"}
+          {/* Avatar */}
+          <div
+            className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium"
+            style={{ backgroundColor: "#111827", color: "#FFFFFF" }}
+          >
+            {initial}
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-900">{username}</p>
-            <p className="text-xs text-gray-500">Sesión activa</p>
+            <p
+              className="text-sm font-medium"
+              style={{ color: "#111827", lineHeight: "20px" }}
+            >
+              {username}
+            </p>
+            <p className="text-xs font-light" style={{ color: "#6B7280" }}>
+              Sesión activa
+            </p>
           </div>
         </div>
+
         <button
           onClick={handleLogout}
-          className="rounded-lg border border-gray-200 px-4 py-1.5 text-sm font-medium text-gray-600 transition hover:bg-gray-100"
+          className="text-sm font-medium transition-all duration-150"
+          style={{
+            color: "#6B7280",
+            padding: "0px",
+            background: "none",
+            border: "none",
+            letterSpacing: "0.35px",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.color = "#111827")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.color = "#6B7280")
+          }
         >
           Cerrar sesión
         </button>
       </header>
 
       {/* Main */}
-      <main className="mx-auto w-full max-w-lg flex-1 space-y-6 p-6">
-        <div>
-          <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-sm text-gray-500">FastAPI JWT Demo</p>
+      <main className="relative z-10 mx-auto w-full max-w-2xl flex-1 space-y-6 px-6 py-10">
+        {/* Welcome hero */}
+        <div className="mb-8">
+          <p
+            className="mb-2 text-sm font-medium"
+            style={{ color: "#6B7280", letterSpacing: "0.35px" }}
+          >
+            BIENVENIDO
+          </p>
+          <h1
+            className="font-medium leading-tight"
+            style={{
+              fontSize: "clamp(36px, 6vw, 64px)",
+              color: "#111827",
+              letterSpacing: "-0.025em",
+              lineHeight: "1.1",
+            }}
+          >
+            Hola, {username} 👋
+          </h1>
+          <p
+            className="mt-3 text-sm font-light"
+            style={{ color: "#6B7280", lineHeight: "22.75px" }}
+          >
+            Has iniciado sesión correctamente en FlowOps. Tu sesión está activa y
+            protegida mediante JWT.
+          </p>
         </div>
 
-        {/* Token status */}
+        {/* Token status card */}
         <TokenStatus />
 
-        {/* Backend health */}
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <p className="mb-2 text-sm font-medium text-gray-600">
-            Estado del backend
-          </p>
-          <div className="flex items-center gap-2">
-            <span
-              className={`rounded-full px-3 py-1 text-xs font-semibold ${classes}`}
+        {/* Backend health card */}
+        <div
+          className="rounded-card p-px"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.01) 100%)",
+          }}
+        >
+          <div
+            className="rounded-card bg-neutral p-6"
+            style={{
+              boxShadow:
+                "rgba(0,0,0,0) 0px 0px 0px 0px, rgba(0,0,0,0) 0px 0px 0px 0px, rgba(0,0,0,0.06) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 1px 1px -0.5px, rgba(0,0,0,0.06) 0px 3px 3px -1.5px, rgba(0,0,0,0.06) 0px 6px 6px -3px, rgba(0,0,0,0.06) 0px 12px 12px -6px, rgba(0,0,0,0.06) 0px 24px 24px -12px",
+            }}
+          >
+            <p
+              className="mb-3 text-sm font-medium"
+              style={{ color: "#111827", letterSpacing: "0.35px" }}
             >
-              {label}
-            </span>
-            <span className="text-xs text-gray-400">
-              GET http://localhost:8000/health
-            </span>
+              Estado del backend
+            </p>
+            <div className="flex items-center gap-3">
+              <span
+                className="rounded-full px-3 py-1 text-xs font-medium"
+                style={{ background: badge.bg, color: badge.color }}
+              >
+                {badge.label}
+              </span>
+              <span
+                className="font-mono text-xs font-light"
+                style={{ color: "#6B7280" }}
+              >
+                GET /health
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Token info */}
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <p className="mb-3 text-sm font-medium text-gray-600">
-            Información de sesión
-          </p>
-          <ul className="space-y-1 text-sm text-gray-700">
-            <li>
-              <span className="font-medium">Usuario:</span> {username}
-            </li>
-            <li>
-              <span className="font-medium">Duración del access token:</span> 300 s
-            </li>
-            <li>
-              <span className="font-medium">Auto-refresh:</span> 30 s antes de
-              expirar
-            </li>
-            <li>
-              <span className="font-medium">Almacenamiento:</span> localStorage
-            </li>
-          </ul>
+        {/* Session info card */}
+        <div
+          className="rounded-card p-px"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.01) 100%)",
+          }}
+        >
+          <div
+            className="rounded-card bg-neutral p-6"
+            style={{
+              boxShadow:
+                "rgba(0,0,0,0) 0px 0px 0px 0px, rgba(0,0,0,0) 0px 0px 0px 0px, rgba(0,0,0,0.06) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 1px 1px -0.5px, rgba(0,0,0,0.06) 0px 3px 3px -1.5px, rgba(0,0,0,0.06) 0px 6px 6px -3px, rgba(0,0,0,0.06) 0px 12px 12px -6px, rgba(0,0,0,0.06) 0px 24px 24px -12px",
+            }}
+          >
+            <p
+              className="mb-3 text-sm font-medium"
+              style={{ color: "#111827", letterSpacing: "0.35px" }}
+            >
+              Información de sesión
+            </p>
+            <ul className="space-y-2">
+              {[
+                { label: "Usuario", value: username ?? "—" },
+                { label: "Duración del access token", value: "300 s" },
+                { label: "Auto-refresh", value: "30 s antes de expirar" },
+                { label: "Almacenamiento", value: "localStorage" },
+              ].map(({ label, value }) => (
+                <li
+                  key={label}
+                  className="flex items-center justify-between text-sm"
+                >
+                  <span
+                    className="font-light"
+                    style={{ color: "#6B7280" }}
+                  >
+                    {label}
+                  </span>
+                  <span
+                    className="font-medium"
+                    style={{ color: "#111827" }}
+                  >
+                    {value}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </main>
     </div>
