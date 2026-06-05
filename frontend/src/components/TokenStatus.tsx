@@ -17,42 +17,76 @@ export default function TokenStatus() {
 
   const barColor =
     secondsLeft > 60
-      ? "bg-green-500"
+      ? "#111827"
       : secondsLeft > 30
-        ? "bg-yellow-400"
-        : "bg-red-500";
+        ? "#D97706"
+        : "#9A3412";
 
-  const textColor =
+  const timeColor =
     secondsLeft > 60
-      ? "text-green-700"
+      ? "#111827"
       : secondsLeft > 30
-        ? "text-yellow-700"
-        : "text-red-700";
+        ? "#D97706"
+        : "#9A3412";
 
   return (
-    <div className="w-full rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <div className="mb-2 flex items-center justify-between text-sm font-medium">
-        <span className="text-gray-600">Access token expira en</span>
-        <span className={`font-mono text-base font-bold ${textColor}`}>
-          {formatTime(secondsLeft)}
-        </span>
-      </div>
-      <div className="h-3 w-full overflow-hidden rounded-full bg-gray-100">
+    <div
+      className="rounded-card p-px"
+      style={{
+        background:
+          "linear-gradient(135deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.01) 100%)",
+      }}
+    >
+      <div
+        className="rounded-card bg-neutral p-6"
+        style={{
+          boxShadow:
+            "rgba(0,0,0,0) 0px 0px 0px 0px, rgba(0,0,0,0) 0px 0px 0px 0px, rgba(0,0,0,0.06) 0px 0px 0px 1px, rgba(0,0,0,0.06) 0px 1px 1px -0.5px, rgba(0,0,0,0.06) 0px 3px 3px -1.5px, rgba(0,0,0,0.06) 0px 6px 6px -3px, rgba(0,0,0,0.06) 0px 12px 12px -6px, rgba(0,0,0,0.06) 0px 24px 24px -12px",
+        }}
+      >
+        <div className="mb-3 flex items-center justify-between">
+          <p
+            className="text-sm font-medium"
+            style={{ color: "#111827", letterSpacing: "0.35px" }}
+          >
+            Access token expira en
+          </p>
+          <span
+            className="font-mono text-base font-medium"
+            style={{ color: timeColor }}
+          >
+            {formatTime(secondsLeft)}
+          </span>
+        </div>
+
+        {/* Progress bar */}
         <div
-          className={`h-full rounded-full transition-all duration-1000 ${barColor}`}
-          style={{ width: `${pct}%` }}
-        />
+          className="h-1.5 w-full overflow-hidden rounded-full"
+          style={{ background: "#E5E7EB" }}
+        >
+          <div
+            className="h-full rounded-full transition-all duration-1000"
+            style={{ width: `${pct}%`, backgroundColor: barColor }}
+          />
+        </div>
+
+        {secondsLeft <= 30 && secondsLeft > 0 && (
+          <p
+            className="mt-2 text-xs font-light"
+            style={{ color: "#D97706", lineHeight: "22.75px" }}
+          >
+            ⟳ Refrescando token automáticamente…
+          </p>
+        )}
+        {secondsLeft === 0 && (
+          <p
+            className="mt-2 text-xs font-light"
+            style={{ color: "#9A3412", lineHeight: "22.75px" }}
+          >
+            Token expirado. Serás redirigido al login.
+          </p>
+        )}
       </div>
-      {secondsLeft <= 30 && secondsLeft > 0 && (
-        <p className="mt-2 text-xs text-yellow-600">
-          ⟳ Refrescando token automáticamente…
-        </p>
-      )}
-      {secondsLeft === 0 && (
-        <p className="mt-2 text-xs text-red-600">
-          Token expirado. Serás redirigido al login.
-        </p>
-      )}
     </div>
   );
 }
