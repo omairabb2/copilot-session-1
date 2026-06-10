@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { healthCheck } from "../api/auth";
+import MicrosoftCertifications from "../components/MicrosoftCertifications";
 import TokenStatus from "../components/TokenStatus";
 import { useAuth } from "../hooks/useAuth";
 
@@ -95,7 +96,7 @@ export default function DashboardPage() {
       </header>
 
       {/* Main */}
-      <main className="relative z-10 mx-auto w-full max-w-2xl flex-1 space-y-6 px-6 py-10">
+      <main className="relative z-10 mx-auto w-full max-w-4xl flex-1 space-y-6 px-6 py-10">
         {/* Welcome hero */}
         <div className="mb-8">
           <p
@@ -214,6 +215,8 @@ export default function DashboardPage() {
             </ul>
           </div>
         </div>
+      {/* Microsoft certifications section */}
+        <MicrosoftCertifications />
       </main>
     </div>
   );
